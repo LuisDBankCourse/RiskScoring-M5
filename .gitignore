@@ -1,0 +1,31 @@
+## Build and binary output
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+packages/
+TestResults/
+
+## Visual Studio / JetBrains Rider
+.idea/
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.sln.docstates
+riderModule.iml
+/_ReSharper.Caches/
+
+## Environment variables and secret files
+.env
+.env.*
+*.env
+*.env.local
+secrets.json
+appsettings*.local.json
+appsettings.Local.json
+
+## macOS / OS metadata
+.DS_Store
+Thumbs.db
