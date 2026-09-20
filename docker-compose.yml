@@ -1,0 +1,6 @@
+services:
+  riskscoring.api:
+    image: ${DOCKER_REGISTRY-}riskscoringapi
+    build:
+      context: .
+      dockerfile: src/RiskScoring.Api/Dockerfile
