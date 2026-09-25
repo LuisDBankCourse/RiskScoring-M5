@@ -36,15 +36,15 @@ var app = builder.Build();
 
 app.UseSerilogRequestLogging();
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.MapScalarApiReference(options => options.WithTitle("RiskScoring Api")
-        .WithTheme(ScalarTheme.Kepler)
-        .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
-    );
+/*if (app.Environment.IsDevelopment())
+{*/
+app.MapOpenApi();
+app.MapScalarApiReference(options => options.WithTitle("RiskScoring Api")
+    .WithTheme(ScalarTheme.Kepler)
+    .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
+);
 
-}
+//}
 
 app.UseHttpsRedirection();
 
