@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: riskscoringapi
+  namespace: prod
+  labels:
+    app: riskscoringapi
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: riskscoringapi
+
+  template:
+    metadata:
+      labels:
+        app: riskscoringapi
+    spec:
+      containers:
+        - name: riskscoringapi
+          image: 'creditflowacrdvid.azurecr.io/riskscoringapi:latest'
+          ports:
+            - containerPort: 8080
+
+          env:
+            - name: ConnectionStrings__RiskScoringConnection
+              valueFrom:
+                secretKeyRef:
+                  name: riskscoringapi-secrets
+                  key: RiskScoringConnection
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"

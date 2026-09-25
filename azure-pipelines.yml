@@ -5,12 +5,12 @@
 
 trigger:
 - main
-- dev
 
 pool:
   vmImage: ubuntu-latest
 
 variables:
+- group: RISKAPI
 - name: imagetag
   value: '$(Build.BuildId)'
 
@@ -50,3 +50,29 @@ steps:
       $(imagetag)
 
     includeLatestTag: true
+
+- task: KubernetesManifest@1
+  displayName: 'Create Secret to aks'
+  inputs:
+    action: 'createSecret'
+    connectionType: 'kubernetesServiceConnection'
+    kubernetesServiceConnection: 'aks-creditflow-connection'
+    namespace: 'prod'
+    secretType: 'generic'
+    secretName: 'riskscoringapi-secrets'
+
+    secretArguments: >
+      --from-literal=RiskScoringConnection="$(RiskScoringConnection)"
+
+- task: KubernetesManifest@1
+  displayName: 'Deploy to AKS'
+  inputs:
+    action: 'deploy'
+    connectionType: 'kubernetesServiceConnection'
+    kubernetesServiceConnection: 'aks-creditflow-connection'
+    namespace: 'prod'
+    manifests: |
+      $(Build.SourcesDirectory)/k8s/deployment.yml
+      $(Build.SourcesDirectory)/k8s/service.yml
+    containers: 'creditflowacrdvid.azurecr.io/riskscoringapi:$(imagetag)'
+    rolloutStatusTimeout: '300'
